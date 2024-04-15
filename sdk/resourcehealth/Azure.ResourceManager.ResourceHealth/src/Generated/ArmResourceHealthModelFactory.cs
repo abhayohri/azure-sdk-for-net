@@ -124,15 +124,17 @@ namespace Azure.ResourceManager.ResourceHealth.Models
         }
 
         /// <summary> Initializes a new instance of MetadataSupportedValueDetail. </summary>
-        /// <param name="id"> The id. </param>
+        /// <param name="id"> The id of the metadata value. </param>
+        /// <param name="previousId"> The previous value of the id field incase the data has changed. </param>
+        /// <param name="serviceGuid"> The permanent guid for the service. Used when the id is a service name. </param>
         /// <param name="displayName"> The display name. </param>
         /// <param name="resourceTypes"> The list of associated resource types. </param>
         /// <returns> A new <see cref="Models.MetadataSupportedValueDetail"/> instance for mocking. </returns>
-        public static MetadataSupportedValueDetail MetadataSupportedValueDetail(string id = null, string displayName = null, IEnumerable<ResourceType> resourceTypes = null)
+        public static MetadataSupportedValueDetail MetadataSupportedValueDetail(string id = null, string previousId = null, string serviceGuid = null, string displayName = null, IEnumerable<ResourceType> resourceTypes = null)
         {
             resourceTypes ??= new List<ResourceType>();
 
-            return new MetadataSupportedValueDetail(id, displayName, resourceTypes?.ToList());
+            return new MetadataSupportedValueDetail(id, previousId, serviceGuid, displayName, resourceTypes?.ToList());
         }
 
         /// <summary> Initializes a new instance of ResourceHealthEventImpactedResourceData. </summary>
@@ -237,13 +239,14 @@ namespace Azure.ResourceManager.ResourceHealth.Models
 
         /// <summary> Initializes a new instance of ResourceHealthEventImpact. </summary>
         /// <param name="impactedService"> Impacted service name. </param>
+        /// <param name="impactedServiceGuid"> Impacted service guid. This is the permanent identifier for the impacted service. </param>
         /// <param name="impactedRegions"> List regions impacted by the service health event. </param>
         /// <returns> A new <see cref="Models.ResourceHealthEventImpact"/> instance for mocking. </returns>
-        public static ResourceHealthEventImpact ResourceHealthEventImpact(string impactedService = null, IEnumerable<ResourceHealthEventImpactedServiceRegion> impactedRegions = null)
+        public static ResourceHealthEventImpact ResourceHealthEventImpact(string impactedService = null, string impactedServiceGuid = null, IEnumerable<ResourceHealthEventImpactedServiceRegion> impactedRegions = null)
         {
             impactedRegions ??= new List<ResourceHealthEventImpactedServiceRegion>();
 
-            return new ResourceHealthEventImpact(impactedService, impactedRegions?.ToList());
+            return new ResourceHealthEventImpact(impactedService, impactedServiceGuid, impactedRegions?.ToList());
         }
 
         /// <summary> Initializes a new instance of ResourceHealthEventImpactedServiceRegion. </summary>

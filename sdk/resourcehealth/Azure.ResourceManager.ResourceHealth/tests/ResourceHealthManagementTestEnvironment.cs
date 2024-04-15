@@ -7,5 +7,6 @@ namespace Azure.ResourceManager.ResourceHealth.Tests
 {
     public class ResourceHealthManagementTestEnvironment : TestEnvironment
     {
+        public static ResourceHealthManagementTestEnvironment Instance { get; } = new ResourceHealthManagementTestEnvironment();
     }
 }

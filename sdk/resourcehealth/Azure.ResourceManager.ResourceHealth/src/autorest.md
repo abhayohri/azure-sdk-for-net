@@ -7,7 +7,7 @@ azure-arm: true
 csharp: true
 library-name: ResourceHealth
 namespace: Azure.ResourceManager.ResourceHealth
-require: https://github.com/Azure/azure-rest-api-specs/blob/56b585b014e28a73a0a7831e27b93fa803effead/specification/resourcehealth/resource-manager/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/2d701c73fb5ee44f95b97b6c3eaf8c4aeb051e73/specification/resourcehealth/resource-manager/readme.md
 # tag: package-2022-10
 output-folder: $(this-folder)/Generated
 clear-output-folder: true

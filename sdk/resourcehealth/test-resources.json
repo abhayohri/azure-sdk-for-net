@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "baseName": {
+            "defaultValue": "AzHealthSdkTest",
+            "type": "String"
+        },
+         "testApplicationOid": {
+            "type": "string",
+            "metadata": {
+                "description": "The principal to assign the role to. This is application object id."
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "metadata": {
+                "description": "The tenant ID to which the application and resources belong."
+            }
+        }
+    },
+    "variables": {
+        //"vmName": "[concat(take(parameters('baseName'), 13), 'vm')]",
+        "vmName": "vm1",
+        "location": "[resourceGroup().location]",
+        "computeApiVersion": "2019-12-01"     
+
+    },
+    "resources": [
+        {
+          "type": "Microsoft.Network/virtualNetworks",
+          "apiVersion": "2020-05-01",
+          "name": "[concat(variables('vmName'), '-vnet')]",
+          "location": "[variables('location')]",
+          "properties": {
+            "addressSpace": {
+              "addressPrefixes": [
+                "10.0.0.0/16"
+              ]
+            },
+            "subnets": [
+              {
+                "name": "default",
+                "properties": {
+                  "addressPrefix": "10.0.0.0/24"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Microsoft.Network/networkInterfaces",
+          "apiVersion": "2020-05-01",
+          "name": "[concat(variables('vmName'), '-nic')]",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Network/virtualNetworks', concat(variables('vmName'), '-vnet'))]"
+          ],
+          "properties": {
+            "ipConfigurations": [
+              {
+                "name": "ipconfig1",
+                "properties": {
+                  "privateIPAllocationMethod": "Dynamic",
+                  "subnet": {
+                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', concat(variables('vmName'), '-vnet'), 'default')]"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "[variables('computeApiVersion')]",
+            "name": "[variables('vmName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+              "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('vmName'), '-nic'))]"
+            ],
+            "properties": {
+              "hardwareProfile": {
+                "vmSize": "Standard_DS1_v2"
+              },
+              "osProfile": {
+                "computerName": "[variables('vmName')]",
+                "adminUsername": "[concat(variables('vmName'), 'admin')]",
+                "adminPassword": "[concat('P', uniqueString(variables('vmName')), 'x', '!')]"
+              },
+              "storageProfile": {
+                "imageReference": {
+                  "publisher": "MicrosoftWindowsServer",
+                  "offer": "WindowsServer",
+                  "sku": "2019-Datacenter",
+                  "version": "latest"
+                },
+                "osDisk": {
+                  "createOption": "FromImage",
+                  "managedDisk": {
+                    "storageAccountType": "StandardSSD_LRS"
+                  }
+                }
+              },
+              "networkProfile": {
+                "networkInterfaces": [
+                  {
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('vmName'), '-nic'))]"
+                  }
+                ]
+              }
+            }
+        }
+    ]
+}

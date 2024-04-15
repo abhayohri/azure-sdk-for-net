@@ -20,6 +20,8 @@ namespace Azure.ResourceManager.ResourceHealth.Models
                 return null;
             }
             Optional<string> id = default;
+            Optional<string> previousId = default;
+            Optional<string> serviceGuid = default;
             Optional<string> displayName = default;
             Optional<IReadOnlyList<ResourceType>> resourceTypes = default;
             foreach (var property in element.EnumerateObject())
@@ -27,6 +29,16 @@ namespace Azure.ResourceManager.ResourceHealth.Models
                 if (property.NameEquals("id"u8))
                 {
                     id = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("previousId"u8))
+                {
+                    previousId = property.Value.GetString();
+                    continue;
+                }
+                if (property.NameEquals("serviceGuid"u8))
+                {
+                    serviceGuid = property.Value.GetString();
                     continue;
                 }
                 if (property.NameEquals("displayName"u8))
@@ -49,7 +61,7 @@ namespace Azure.ResourceManager.ResourceHealth.Models
                     continue;
                 }
             }
-            return new MetadataSupportedValueDetail(id.Value, displayName.Value, Optional.ToList(resourceTypes));
+            return new MetadataSupportedValueDetail(id.Value, previousId.Value, serviceGuid.Value, displayName.Value, Optional.ToList(resourceTypes));
         }
     }
 }

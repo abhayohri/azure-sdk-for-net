@@ -20,18 +20,26 @@ namespace Azure.ResourceManager.ResourceHealth.Models
         }
 
         /// <summary> Initializes a new instance of MetadataSupportedValueDetail. </summary>
-        /// <param name="id"> The id. </param>
+        /// <param name="id"> The id of the metadata value. </param>
+        /// <param name="previousId"> The previous value of the id field incase the data has changed. </param>
+        /// <param name="serviceGuid"> The permanent guid for the service. Used when the id is a service name. </param>
         /// <param name="displayName"> The display name. </param>
         /// <param name="resourceTypes"> The list of associated resource types. </param>
-        internal MetadataSupportedValueDetail(string id, string displayName, IReadOnlyList<ResourceType> resourceTypes)
+        internal MetadataSupportedValueDetail(string id, string previousId, string serviceGuid, string displayName, IReadOnlyList<ResourceType> resourceTypes)
         {
             Id = id;
+            PreviousId = previousId;
+            ServiceGuid = serviceGuid;
             DisplayName = displayName;
             ResourceTypes = resourceTypes;
         }
 
-        /// <summary> The id. </summary>
+        /// <summary> The id of the metadata value. </summary>
         public string Id { get; }
+        /// <summary> The previous value of the id field incase the data has changed. </summary>
+        public string PreviousId { get; }
+        /// <summary> The permanent guid for the service. Used when the id is a service name. </summary>
+        public string ServiceGuid { get; }
         /// <summary> The display name. </summary>
         public string DisplayName { get; }
         /// <summary> The list of associated resource types. </summary>

@@ -21,15 +21,19 @@ namespace Azure.ResourceManager.ResourceHealth.Models
 
         /// <summary> Initializes a new instance of ResourceHealthEventImpact. </summary>
         /// <param name="impactedService"> Impacted service name. </param>
+        /// <param name="impactedServiceGuid"> Impacted service guid. This is the permanent identifier for the impacted service. </param>
         /// <param name="impactedRegions"> List regions impacted by the service health event. </param>
-        internal ResourceHealthEventImpact(string impactedService, IReadOnlyList<ResourceHealthEventImpactedServiceRegion> impactedRegions)
+        internal ResourceHealthEventImpact(string impactedService, string impactedServiceGuid, IReadOnlyList<ResourceHealthEventImpactedServiceRegion> impactedRegions)
         {
             ImpactedService = impactedService;
+            ImpactedServiceGuid = impactedServiceGuid;
             ImpactedRegions = impactedRegions;
         }
 
         /// <summary> Impacted service name. </summary>
         public string ImpactedService { get; }
+        /// <summary> Impacted service guid. This is the permanent identifier for the impacted service. </summary>
+        public string ImpactedServiceGuid { get; }
         /// <summary> List regions impacted by the service health event. </summary>
         public IReadOnlyList<ResourceHealthEventImpactedServiceRegion> ImpactedRegions { get; }
     }
